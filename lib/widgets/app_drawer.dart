@@ -1,8 +1,10 @@
 import 'dart:ui';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/logic/sizes_helpers.dart';
 import 'package:shop_app/providers/auth.dart';
 import 'package:shop_app/screens/auth_screen.dart';
 import 'package:shop_app/screens/cart_screen.dart';
@@ -49,9 +51,21 @@ class AppDrawer extends StatelessWidget {
                     size: 30,
                     color: iconColor,
                   ),
-                  label: Text(
-                    'Shop',
-                    style: TextStyle(color: textColor),
+                  label: Container(
+                    width: displayWidth(context)/1.9,
+                    child: AutoSizeText('Shop',
+                      textAlign: TextAlign.center,
+
+                      maxLines: 1,
+                      style: TextStyle(fontSize: 30,color: textColor),
+                      overflow: TextOverflow.ellipsis,
+                      maxFontSize: 30,
+                      softWrap: true,
+                      wrapWords: true,
+                      minFontSize: 15,
+                      stepGranularity: 0.1,
+
+                    ),
                   ),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -82,9 +96,20 @@ class AppDrawer extends StatelessWidget {
                     size: 30,
                     color: iconColor,
                   ),
-                  label: Text(
-                    'Cart',
-                    style: TextStyle(color: textColor),
+                  label:Container(
+                    width: displayWidth(context)/1.9,
+                    child: AutoSizeText('Cart',
+                      textAlign: TextAlign.center,
+
+                      maxLines: 1,
+                      style: TextStyle(fontSize: 30,color: textColor),
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: true,
+                      wrapWords: true,
+                      minFontSize: 0,
+                      stepGranularity: 0.1,
+
+                    ),
                   ),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -112,9 +137,20 @@ class AppDrawer extends StatelessWidget {
                       size: 30,
                       color: iconColor,
                     ),
-                    label: Text(
-                      'Orders',
-                      style: TextStyle(color: textColor),
+                    label: Container(
+                      width: displayWidth(context)/1.9,
+                      child: AutoSizeText('Orders',
+                        textAlign: TextAlign.center,
+
+                        maxLines: 1,
+                        style: TextStyle(fontSize: 30,color: textColor),
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: true,
+                        wrapWords: true,
+                        minFontSize: 0,
+                        stepGranularity: 0.1,
+
+                      ),
                     ),
                     onPressed: () {
                       Navigator.of(context).pop();
@@ -140,9 +176,20 @@ class AppDrawer extends StatelessWidget {
                     size: 30,
                     color: iconColor,
                   ),
-                  label: Text(
-                    'Product manage page',
-                    style: TextStyle(color: textColor),
+                  label: Container(
+                    width: displayWidth(context)/1.9,
+                    child: AutoSizeText('Product Mange',
+                      textAlign: TextAlign.center,
+
+                      maxLines: 1,
+                      style: TextStyle(fontSize: 30,color: textColor),
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: true,
+                      wrapWords: true,
+                      minFontSize: 0,
+                      stepGranularity: 0.1,
+
+                    ),
                   ),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -169,9 +216,19 @@ class AppDrawer extends StatelessWidget {
                     size: 30,
                     color: iconColor,
                   ),
-                  label: Text(
-                    'Logout',
-                    style: TextStyle(color: textColor),
+                  label: Container(
+                    width: displayWidth(context)/1.9,
+                    child: AutoSizeText('Logout',
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      style: TextStyle(fontSize: 30,color: textColor),
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: true,
+                      wrapWords: true,
+                      minFontSize: 0,
+                      stepGranularity: 0.1,
+
+                    ),
                   ),
                   onPressed: () {
                     Navigator.of(context).pop();//close drawer

@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/cart.dart';
@@ -68,15 +69,16 @@ class _OrderItemState extends State<OrderItem> {
           ),
           (_expanded)? Divider(color: Colors.black,):Container(),
 
-          (_expanded)
-              ? Padding(
+           Padding(
                   padding: EdgeInsets.all(5.0),
-                  child: Container(
-                    height: min(widget.order.cartProducts.length * 25.0 + 100, 180.0),
+                  child: AnimatedContainer(
+                    curve: Curves.ease,
+                    duration: Duration(milliseconds: 400),
+                    height: _expanded? min(widget.order.cartProducts.length * 25.0 + 100, 180.0)
+                        :0,
                     child: ListView(children: detailedList),
                   ),
                 )
-              : Container()
         ]),
       ),
     );

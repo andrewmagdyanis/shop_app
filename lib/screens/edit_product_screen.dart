@@ -1,10 +1,13 @@
+import 'dart:io';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/product.dart';
 import 'package:shop_app/providers/products.dart';
-import 'package:validators/validators.dart';
 import 'package:validators/sanitizers.dart';
+import 'package:validators/validators.dart';
+import 'package:image_picker/image_picker.dart';
 
 class EditProductScreen extends StatefulWidget {
   final bool addingBehavior;
@@ -27,12 +30,47 @@ class _EditProductScreenState extends State<EditProductScreen> {
   TextEditingController _urlController = TextEditingController();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  Product _editedProduct = Product(id: null, title: '', description: '', imageUrl: '', price: 0);
+  Product _editedProduct =
+      Product(id: null, title: '', description: '', imageUrl: '', price: 0);
   String currentUrl = '';
   bool initDone = false;
   bool isLoading = false;
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  Future<File> imageFile;
+
+  pickImageFromGallery(ImageSource source) {
+    setState(() {
+      imageFile = ImagePicker.pickImage(source: source);
+    });
+  }
+
+  Widget showImage() {
+    return FutureBuilder<File>(
+      future: imageFile,
+      builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
+        if (snapshot.connectionState == ConnectionState.done &&
+            snapshot.data != null) {
+          return Image.file(
+            snapshot.data,
+            width: 300,
+            height: 300,
+          );
+        } else if (snapshot.error != null) {
+          return const Text(
+            'Error Picking Image',
+            textAlign: TextAlign.center,
+          );
+        } else {
+          return const Text(
+            'No Image Selected',
+            textAlign: TextAlign.center,
+          );
+        }
+      },
+    );
+  }
 
   @override
   void initState() {
@@ -48,8 +86,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
   @override
   void didChangeDependencies() {
     if (!initDone && !widget.addingBehavior) {
-      _editedProduct =
-          Provider.of<Products>(context, listen: false).getProductById(widget.oldProductID);
+      _editedProduct = Provider.of<Products>(context, listen: false)
+          .getProductById(widget.oldProductID);
       _urlController.text = _editedProduct.imageUrl;
     }
     initDone = true;
@@ -78,7 +116,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
       try {
         (widget.addingBehavior)
-            ? await Provider.of<Products>(context, listen: false).addItem(_editedProduct)
+            ? await Provider.of<Products>(context, listen: false)
+                .addItem(_editedProduct)
             : await Provider.of<Products>(context, listen: false)
                 .updateItem(_editedProduct.id, _editedProduct);
       } catch (e) {
@@ -116,22 +155,22 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    (!widget.addingBehavior)?
-    print('Build: EditProductScreen'):print('Build: AddingProdutScreen');
+    (!widget.addingBehavior)
+        ? print('Build: EditProductScreen')
+        : print('Build: AddingProdutScreen');
     return Builder(
       builder: (context) => Scaffold(
         key: scaffoldKey,
         appBar: AppBar(
-          title: AutoSizeText(widget.addingBehavior?'Adding product page':'Edit product page',
+          title: AutoSizeText(
+            widget.addingBehavior ? 'Adding product page' : 'Edit product page',
             maxLines: 1,
             style: TextStyle(fontSize: 30),
-
             overflow: TextOverflow.ellipsis,
             softWrap: true,
             wrapWords: true,
             minFontSize: 0,
             stepGranularity: 0.1,
-
           ),
           actions: [
             IconButton(
@@ -237,18 +276,22 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             children: [
                               Container(
                                 width: MediaQuery.of(context).size.width * 0.3,
-                                height: MediaQuery.of(context).size.height * 0.2,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.2,
                                 decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.yellow[900], width: 2),
+                                  border: Border.all(
+                                      color: Colors.yellow[900], width: 2),
                                 ),
                                 child: _urlController.text.isEmpty ||
-                                        !isURL(_urlController.text, allowUnderscore: true)
+                                        !isURL(_urlController.text,
+                                            allowUnderscore: true)
                                     ? Text('Enter url')
                                     : FittedBox(
                                         child: Image.network(
                                           currentUrl,
                                           repeat: ImageRepeat.repeat,
-                                          errorBuilder: (context, Object url, error) {
+                                          errorBuilder:
+                                              (context, Object url, error) {
                                             return Padding(
                                               padding: EdgeInsets.all(4.0),
                                               child: Text('Enter valid url'),
@@ -276,7 +319,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                         currentUrl = value;
                                       });
                                     },
-                                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
                                     validator: (value) {
                                       if (value.isEmpty) {
                                         return 'Please enter the url';
@@ -288,14 +332,34 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                         _editedProduct = Product(
                                             id: _editedProduct.id,
                                             title: _editedProduct.title,
-                                            description: _editedProduct.description,
+                                            description:
+                                                _editedProduct.description,
                                             imageUrl: value,
                                             price: _editedProduct.price);
                                       });
                                     }),
                               ),
                             ]),
-                      )
+                      ),
+                      showImage(),
+                      Divider(
+                        height: 20,
+                      ),
+                      RaisedButton(
+                        child: Text("Select Image from Gallery"),
+                        onPressed: () {
+                          pickImageFromGallery(ImageSource.gallery);
+                        },
+                      ),
+                      Divider(
+                        height: 20,
+                      ),
+                      RaisedButton(
+                        child: Text("Pick Image using Camera"),
+                        onPressed: () {
+                          pickImageFromGallery(ImageSource.camera);
+                        },
+                      ),
                     ],
                   ),
                 ),

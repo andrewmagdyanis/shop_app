@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:shop_app/helpers/custom_route.dart';
+
 import '../components/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +52,8 @@ class Themes {
 
       indicatorColor: color,
       pageTransitionsTheme: PageTransitionsTheme(builders: {
-        TargetPlatform.android: OpenUpwardsPageTransitionsBuilder(),
+        TargetPlatform.android: CustomPageTransitionBuilder(),
+        TargetPlatform.iOS: CustomPageTransitionBuilder(),
       }),
 
       accentIconTheme: IconThemeData(color: color),
@@ -139,13 +142,13 @@ class Themes {
           hoverColor: Colors.greenAccent),
 
       textTheme: TextTheme(
-        headline1: TextStyle(fontSize: s * 0.00022, fontWeight: FontWeight.bold, color: color),
-        headline2: TextStyle(fontSize: s * 0.00018, fontWeight: FontWeight.bold, color: color),
-        headline3: TextStyle(fontSize: s * 0.00015, fontWeight: FontWeight.bold, color: color),
-        headline4: TextStyle(fontSize: s * 0.00012, fontWeight: FontWeight.bold, color: color),
-        headline5: TextStyle(fontSize: s * 0.0001, fontWeight: FontWeight.bold, color: color),
+        headline1: TextStyle(fontSize: s * 0.0002, fontWeight: FontWeight.bold, color: color),
+        headline2: TextStyle(fontSize: s * 0.00015, fontWeight: FontWeight.bold, color: color),
+        headline3: TextStyle(fontSize: s * 0.00014, fontWeight: FontWeight.bold, color: color),
+        headline4: TextStyle(fontSize: s * 0.0001, fontWeight: FontWeight.bold, color: color),
+        headline5: TextStyle(fontSize: s * 0.00009, fontWeight: FontWeight.bold, color: color),
         headline6: TextStyle(
-            fontSize: s * 0.000085,
+            fontSize: s * 0.00008,
             fontWeight: FontWeight.bold,
             fontStyle: FontStyle.italic,
             color: color),

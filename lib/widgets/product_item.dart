@@ -54,7 +54,16 @@ class ProductItem extends StatelessWidget {
           //     fit: BoxFit.fill,
           //     filterQuality: FilterQuality.high,
           //   ),
-          child: Image.network(myProduct.imageUrl),
+         // child: Image.network(myProduct.imageUrl),
+
+        child: Hero(
+          tag: myProduct.id,
+          child: FadeInImage( placeholder: AssetImage
+            ('assets/images/cart/open_market_1/logo.png'), image:
+          CachedNetworkImageProvider(myProduct
+              .imageUrl,
+          ),),
+        ),
         ),
           footer: GridTileBar(
 

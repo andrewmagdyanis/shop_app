@@ -4,7 +4,6 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'dart:io';
 import 'package:oauth1/oauth1.dart' as oauth1;
 import 'package:flutter/material.dart';
@@ -23,9 +22,9 @@ class AuthServices {
   //social media authetication instances
   final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
   final FacebookLogin _facebookLogin = FacebookLogin();
-  final TwitterLogin _twitterLogin = new TwitterLogin(
-      consumerKey: 'O4IHRKUod4CHBb1ScjW6fh6Wi',
-      consumerSecret: 'h5nANM53WmF5vWHjZEtHTg4cYPgQqhOC8dqWp4VI1HfrthZ255');
+  //final TwitterLogin _twitterLogin = new TwitterLogin(
+     // consumerKey: 'O4IHRKUod4CHBb1ScjW6fh6Wi',
+     // consumerSecret: 'h5nANM53WmF5vWHjZEtHTg4cYPgQqhOC8dqWp4VI1HfrthZ255');
 
   final BuildContext context;
 
@@ -208,121 +207,121 @@ class AuthServices {
   }
 
   //Twitter Login:
-  Future<dynamic> twitterLogin() async {
-    dynamic user;
-    UserState userState;
-    TwitterLoginResult twitterLoginResult;
-    try {
-      twitterLoginResult = await _twitterLogin.authorize();
-    } catch (e) {
-      print('twitter login result error: ' + e.toString());
-      user = e;
-    }
-    switch (twitterLoginResult.status) {
-      case TwitterLoginStatus.error:
-        print("Error");
-        user = TwitterLoginStatus.error;
-        break;
-
-      case TwitterLoginStatus.cancelledByUser:
-        print("CancelledByUser");
-        user = TwitterLoginStatus.cancelledByUser;
-        break;
-
-      case TwitterLoginStatus.loggedIn:
-        print("LoggedIn");
-        final AuthCredential credential = TwitterAuthProvider.getCredential(
-          authToken: twitterLoginResult.session.token,
-          authTokenSecret: twitterLoginResult.session.secret,
-        );
-        user = (await _auth.signInWithCredential(credential)).user;
-        userState = await saveUserData(user, authProvider: 'Twitter');
-
-        print('Done.... you are signed-in with Twitter authentication');
-        break;
-    }
-
-    return userState;
-  }
-
-  Future<dynamic> twitterLogin2(BuildContext context) async {
-    FirebaseUser user;
-    UserState userState;
-    Navigator.of(context).pushNamed('twitterPage', arguments: {
-      "consumerKey": 'O4IHRKUod4CHBb1ScjW6fh6Wi',
-      "consumerSecret": 'h5nANM53WmF5vWHjZEtHTg4cYPgQqhOC8dqWp4VI1HfrthZ255',
-      "oauthCallbackHandler": 'twittersdk://'
-    }).then((credential) async {
-      //Accept returned parameters
-      print(credential.toString());
-      user = (await _auth.signInWithCredential(credential)).user;
-
-      userState = await saveUserData(user, authProvider: 'twitter');
-
-      print('Done.... you are signed-in with Google authentication');
-    });
-    return userState;
-
-/*
-    var platform = new oauth1.Platform(
-        'https://api.twitter.com/oauth/request_token', // temporary credentials request
-        'https://api.twitter.com/oauth/authorize', // resource owner authorization
-        'https://api.twitter.com/oauth/access_token', // token credentials request
-        oauth1.SignatureMethods.hmacSha1 // signature method
-        );
-
-    // define client credentials (consumer keys)
-    const String apiKey = 'O4IHRKUod4CHBb1ScjW6fh6Wi';
-    const String apiSecret = 'h5nANM53WmF5vWHjZEtHTg4cYPgQqhOC8dqWp4VI1HfrthZ255';
-    var clientCredentials = new oauth1.ClientCredentials(apiKey, apiSecret);
-
-    // create Authorization object with client credentials and platform definition
-    var auth = new oauth1.Authorization(clientCredentials, platform);
-
-    // request temporary credentials (request tokens)
-    auth.requestTemporaryCredentials('oob').then((res) {
-      // redirect to authorization page
-      print(
-          "Open with your browser: ${auth.getResourceOwnerAuthorizationURI(res.credentials.token)}");
-      final authorizationPage = auth.getResourceOwnerAuthorizationURI(res.credentials.token);
-      final flutterWebviewPlugin = FlutterWebviewPlugin();
-
-      flutterWebviewPlugin.launch(authorizationPage);
-      // get verifier (PIN)
-      var queryParameters = Uri.parse(authorizationPage).queryParameters;
-      var oauthToken = queryParameters['oauth_token'];
-      var oauthVerifier = queryParameters['oauth_verifier'];
-      print('auth ttoken :' + oauthToken);
-      print('auth verifier: ' + oauthVerifier);
-      // request token credentials (access tokens)
-      return auth.requestTokenCredentials(res.credentials, oauthVerifier);
-    }).then((res) {
-      final result = TwitterAuthProvider.getCredential(
-        authToken: res.credentials.token,
-        authTokenSecret: res.credentials.tokenSecret,
-      );
-      // get verifier (PIN)
-      stdout.write("PIN: ");
-      String verifier = stdin.readLineSync();
-
-      // request token credentials (access tokens)
-      return auth.requestTokenCredentials(res.credentials, verifier);
-    }).then((res) {
-      // yeah, you got token credentials
-      // create Client object
-      var client = new oauth1.Client(platform.signatureMethod, clientCredentials, res.credentials);
-
-      // now you can access to protected resources via client
-      client.get('https://api.twitter.com/1.1/statuses/home_timeline.json?count=1').then((res) {
-        print(res.body);
-      });
-
-      // NOTE: you can get optional values from AuthorizationResponse object
-      print("Your screen name is " + res.optionalParameters['screen_name']);
-    });
-
-    */
-  }
+//   Future<dynamic> twitterLogin() async {
+//     dynamic user;
+//     UserState userState;
+//     TwitterLoginResult twitterLoginResult;
+//     try {
+//       twitterLoginResult = await _twitterLogin.authorize();
+//     } catch (e) {
+//       print('twitter login result error: ' + e.toString());
+//       user = e;
+//     }
+//     switch (twitterLoginResult.status) {
+//       case TwitterLoginStatus.error:
+//         print("Error");
+//         user = TwitterLoginStatus.error;
+//         break;
+//
+//       case TwitterLoginStatus.cancelledByUser:
+//         print("CancelledByUser");
+//         user = TwitterLoginStatus.cancelledByUser;
+//         break;
+//
+//       case TwitterLoginStatus.loggedIn:
+//         print("LoggedIn");
+//         final AuthCredential credential = TwitterAuthProvider.getCredential(
+//           authToken: twitterLoginResult.session.token,
+//           authTokenSecret: twitterLoginResult.session.secret,
+//         );
+//         user = (await _auth.signInWithCredential(credential)).user;
+//         userState = await saveUserData(user, authProvider: 'Twitter');
+//
+//         print('Done.... you are signed-in with Twitter authentication');
+//         break;
+//     }
+//
+//     return userState;
+//   }
+//
+//   Future<dynamic> twitterLogin2(BuildContext context) async {
+//     FirebaseUser user;
+//     UserState userState;
+//     Navigator.of(context).pushNamed('twitterPage', arguments: {
+//       "consumerKey": 'O4IHRKUod4CHBb1ScjW6fh6Wi',
+//       "consumerSecret": 'h5nANM53WmF5vWHjZEtHTg4cYPgQqhOC8dqWp4VI1HfrthZ255',
+//       "oauthCallbackHandler": 'twittersdk://'
+//     }).then((credential) async {
+//       //Accept returned parameters
+//       print(credential.toString());
+//       user = (await _auth.signInWithCredential(credential)).user;
+//
+//       userState = await saveUserData(user, authProvider: 'twitter');
+//
+//       print('Done.... you are signed-in with Google authentication');
+//     });
+//     return userState;
+//
+// /*
+//     var platform = new oauth1.Platform(
+//         'https://api.twitter.com/oauth/request_token', // temporary credentials request
+//         'https://api.twitter.com/oauth/authorize', // resource owner authorization
+//         'https://api.twitter.com/oauth/access_token', // token credentials request
+//         oauth1.SignatureMethods.hmacSha1 // signature method
+//         );
+//
+//     // define client credentials (consumer keys)
+//     const String apiKey = 'O4IHRKUod4CHBb1ScjW6fh6Wi';
+//     const String apiSecret = 'h5nANM53WmF5vWHjZEtHTg4cYPgQqhOC8dqWp4VI1HfrthZ255';
+//     var clientCredentials = new oauth1.ClientCredentials(apiKey, apiSecret);
+//
+//     // create Authorization object with client credentials and platform definition
+//     var auth = new oauth1.Authorization(clientCredentials, platform);
+//
+//     // request temporary credentials (request tokens)
+//     auth.requestTemporaryCredentials('oob').then((res) {
+//       // redirect to authorization page
+//       print(
+//           "Open with your browser: ${auth.getResourceOwnerAuthorizationURI(res.credentials.token)}");
+//       final authorizationPage = auth.getResourceOwnerAuthorizationURI(res.credentials.token);
+//       final flutterWebviewPlugin = FlutterWebviewPlugin();
+//
+//       flutterWebviewPlugin.launch(authorizationPage);
+//       // get verifier (PIN)
+//       var queryParameters = Uri.parse(authorizationPage).queryParameters;
+//       var oauthToken = queryParameters['oauth_token'];
+//       var oauthVerifier = queryParameters['oauth_verifier'];
+//       print('auth ttoken :' + oauthToken);
+//       print('auth verifier: ' + oauthVerifier);
+//       // request token credentials (access tokens)
+//       return auth.requestTokenCredentials(res.credentials, oauthVerifier);
+//     }).then((res) {
+//       final result = TwitterAuthProvider.getCredential(
+//         authToken: res.credentials.token,
+//         authTokenSecret: res.credentials.tokenSecret,
+//       );
+//       // get verifier (PIN)
+//       stdout.write("PIN: ");
+//       String verifier = stdin.readLineSync();
+//
+//       // request token credentials (access tokens)
+//       return auth.requestTokenCredentials(res.credentials, verifier);
+//     }).then((res) {
+//       // yeah, you got token credentials
+//       // create Client object
+//       var client = new oauth1.Client(platform.signatureMethod, clientCredentials, res.credentials);
+//
+//       // now you can access to protected resources via client
+//       client.get('https://api.twitter.com/1.1/statuses/home_timeline.json?count=1').then((res) {
+//         print(res.body);
+//       });
+//
+//       // NOTE: you can get optional values from AuthorizationResponse object
+//       print("Your screen name is " + res.optionalParameters['screen_name']);
+//     });
+//
+//     */
+//   }
 
   //sign-out with Google
   void _googleLogut() async {
@@ -345,20 +344,20 @@ class AuthServices {
   }
 
   //Twitter Logout:
-  void _twitterLogut() async {
-    if (await _twitterLogin.isSessionActive) {
-      _twitterLogin.logOut();
-      print('Done.... you are signed-out with Twitter');
-    } else {
-      print('you are not signed in twitter to logout');
-    }
-  }
+  // void _twitterLogut() async {
+  //   if (await _twitterLogin.isSessionActive) {
+  //     _twitterLogin.logOut();
+  //     print('Done.... you are signed-out with Twitter');
+  //   } else {
+  //     print('you are not signed in twitter to logout');
+  //   }
+  // }
 
   //general Logout all:
   void userLogout() {
     _auth.signOut();
     _facebookLogut();
-    _twitterLogut();
+   // _twitterLogut();
     _googleLogut();
   }
 }

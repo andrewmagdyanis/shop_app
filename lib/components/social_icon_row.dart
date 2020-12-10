@@ -52,7 +52,7 @@ class SocialIconsRow extends StatelessWidget {
                 checker.internetChecks(context).then((internet) {
                   if (internet == true) {
                     Navigator.of(context).pushNamed('loading');
-                    Future<dynamic> user = authServicesClient.twitterLogin();
+                    Future<dynamic> user = authServicesClient.facebookLogin();
                     user.then((value) {
                       checker.loginChecks(context, value);
                       StoreProvider.of<AppState>(context).dispatch(UserInfoUpdate(userState: value));
